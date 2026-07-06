@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main
       className="relative flex flex-1 items-center justify-center bg-cover bg-center bg-no-repeat px-6 py-16"
-      style={{ backgroundImage: "url(/bg.png)" }}
+      style={{ backgroundImage: "url(/bg.webp)" }}
     >
       <div
         aria-hidden
