@@ -1,6 +1,6 @@
 "use server";
 
-import { getSupabase } from "@/lib/supabase";
+import { saveWaitlistEmail } from "@/lib/notion";
 
 export type JoinWaitlistState = {
   status: "idle" | "success" | "error";
@@ -16,34 +16,22 @@ export async function joinWaitlist(
   const raw = formData.get("email");
   const email = typeof raw === "string" ? raw.trim().toLowerCase() : "";
 
-  if (!email || !EMAIL_RE.test(email)) {
+  if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
     return { status: "error", message: "Please enter a valid email address." };
   }
 
   try {
-    const supabase = getSupabase();
-    const { error } = await supabase.from("waitlist").insert({ email });
-
-    if (error) {
-      if (error.code === "23505") {
-        return {
-          status: "success",
-          message: "You're already on the list. We'll be in touch.",
-        };
-      }
-      console.error("waitlist insert failed", error);
-      return {
-        status: "error",
-        message: "Something went wrong. Please try again.",
-      };
-    }
+    await saveWaitlistEmail(email);
 
     return {
       status: "success",
-      message: "You're on the list. We'll be in touch.",
+      message: "Thank you!",
     };
   } catch (err) {
-    console.error("waitlist insert threw", err);
+    console.error(
+      "waitlist save failed",
+      err instanceof Error ? err.message : "Unknown error",
+    );
     return {
       status: "error",
       message: "Something went wrong. Please try again.",
