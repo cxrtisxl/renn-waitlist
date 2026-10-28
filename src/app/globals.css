@@ -63,6 +63,33 @@ input {
   height: auto;
 }
 
+.landing-footer {
+  position: absolute;
+  bottom: clamp(24px, 4.45svh, 40px);
+  inset-inline: 24px;
+  text-align: center;
+}
+
+.landing-footer a {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255 255 255 / 75%);
+  transition: color 150ms;
+}
+
+.landing-footer a:hover {
+  color: #fff;
+}
+
+.landing-footer a:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 .waitlist {
   width: 100%;
   text-align: center;
