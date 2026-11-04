@@ -21,10 +21,10 @@ npm start
 
 ## What Submit does
 
-1. The browser validates the required email field and posts the form to the same website using the `joinWaitlist` Next.js Server Action (`src/app/actions.ts`). On Railway, that action runs on the Railway server.
-2. The action trims and lowercases the email, validates it again (including a 254-character maximum), and calls the server-only Notion module (`src/lib/notion.ts`). It queries the configured data source for that email and creates a row if it is new.
+1. The browser validates the required email and latest-tweet link fields, then posts the form to the same website using the `joinWaitlist` Next.js Server Action (`src/app/actions.ts`). On Railway, that action runs on the Railway server. The link must use `x.com/RennFinance/status/<post-id>`, with a nonempty post ID. The address may be preceded by `http://`, `https://`, and/or `www.` (case-insensitive, with surrounding whitespace ignored). Other accounts, lookalike domains or handles, profile links, and links without a post ID are rejected. Only the account address and post-link format are checked; the app does not verify a specific post, whether it exists, or whether it is the latest.
+2. The action trims and lowercases the email, validates it again (including a 254-character maximum), and independently checks the tweet link before calling the server-only Notion module (`src/lib/notion.ts`). A missing or invalid link prevents the email from being saved. The module queries the configured data source for that email and creates a row if it is new. The tweet link is only used for validation and is not stored.
 3. The email is saved in the **Email** title property of [Renn Waitlist](https://app.notion.com/p/iansosunov/3e9c947f4336800bb8e8ea3ff61a4e08?v=3e9c947f43368020b768000ca752b051). Notion fills **Created at** automatically. An email already on the list counts as a successful submission. Simultaneous submissions of the same email within one server process share one operation; Notion has no unique constraint, so submissions to different server instances can still race.
-4. After success, the input and button are replaced by **Thank you!**. During the request, the controls are disabled. If saving fails, the form stays visible with a retry message.
+4. After success, the fields and button are replaced by **Thank you!**. During the request, the controls are disabled. If validation or saving fails, the form stays visible with an error message and retains both entered values.
 
 The application does **not** send a confirmation email or notify the team. Emails appear as rows in the Notion table. No mailing service is connected. Previous Supabase records are not automatically imported into Notion.
 

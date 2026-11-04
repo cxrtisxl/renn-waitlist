@@ -1,3 +1,4 @@
+import { RENN_X_URL } from "@/lib/renn-twitter";
 import { BackgroundGate } from "./background-gate";
 import { WaitlistForm } from "./waitlist-form";
 
@@ -14,7 +15,7 @@ export default function Home() {
       </section>
       <footer className="landing-footer">
         <a
-          href="https://x.com/RennFinance"
+          href={RENN_X_URL}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Renn on X (opens in a new tab)"

@@ -84,7 +84,8 @@ input {
   color: #fff;
 }
 
-.landing-footer a:focus-visible {
+.landing-footer a:focus-visible,
+.waitlist-label a:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 4px;
   border-radius: 4px;
@@ -120,14 +121,30 @@ input {
 }
 
 .waitlist-form {
-  display: flex;
+  display: grid;
+  gap: 12px;
+}
+
+.waitlist-tweet-field {
+  display: grid;
   gap: 8px;
+  text-align: left;
+}
+
+.waitlist-label {
+  color: #bdc7cf;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.waitlist-label a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .waitlist-input {
-  width: 0;
+  width: 100%;
   min-width: 0;
-  flex: 1;
   height: 44px;
   border: 1px solid rgb(255 255 255 / 12%);
   border-radius: 12px;

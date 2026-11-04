@@ -1,10 +1,12 @@
 "use server";
 
 import { saveWaitlistEmail } from "@/lib/notion";
+import { isRennTweetUrl, RENN_TWEET_URL_ERROR } from "@/lib/renn-twitter";
 
 export type JoinWaitlistState = {
   status: "idle" | "success" | "error";
   message: string;
+  field?: "email" | "tweetUrl";
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -17,7 +19,21 @@ export async function joinWaitlist(
   const email = typeof raw === "string" ? raw.trim().toLowerCase() : "";
 
   if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
-    return { status: "error", message: "Please enter a valid email address." };
+    return {
+      status: "error",
+      message: "Please enter a valid email address.",
+      field: "email",
+    };
+  }
+
+  const tweetUrl = formData.get("tweetUrl");
+
+  if (typeof tweetUrl !== "string" || !isRennTweetUrl(tweetUrl)) {
+    return {
+      status: "error",
+      message: RENN_TWEET_URL_ERROR,
+      field: "tweetUrl",
+    };
   }
 
   try {
