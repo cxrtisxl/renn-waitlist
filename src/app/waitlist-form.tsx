@@ -40,7 +40,7 @@ export function WaitlistForm() {
             <label htmlFor="tweet-url" className="waitlist-label">
               Link to the latest tweet from{" "}
               <a href={RENN_X_URL} target="_blank" rel="noopener noreferrer">
-                Ren Finance
+                Renn Finance
               </a>
             </label>
             <input
